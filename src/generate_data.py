@@ -11,16 +11,15 @@ load_dotenv(".env")
 
 def generate_end_time():
     try:
-        max_hours = os.environ.get("maxHours")
-        if not (isinstance(max_hours, int) and max_hours > 0 and max_hours <= 9):
+        max_hours = os.environ.get("max_hours")
+        if not (isinstance(max_hours, int) and max_hours > 0 and max_hours <= 30):
+            max_hours = 30
             print(
-                "Conditions for Maximum hours not satisfied, therefore, running the bot for 2 hours"
+                f"Conditions for Maximum hours not satisfied, therefore, running the bot for {max_hours} hours"
             )
-            max_hours = 2
     except NameError:
-        # Running it for 2 hours by default
-        print("Running the bot for 2 hours as there were no hours specified.")
-        max_hours = 2
+        max_hours = 30
+        print(f"Running the bot for {max_hours} hours as there were no hours specified.")
 
     end_time = time.time() + 60 * 60 * max_hours
     print("Running it for: ", max_hours, " hours.")
@@ -40,7 +39,7 @@ class GenerateLink:
         self.facilities_filter_link()
 
         print("Final link is: ", self.link)
-        return self.link
+        return self.link+"&sort=publishDateDesc"
 
     def city_filter_link(self):
         try:
